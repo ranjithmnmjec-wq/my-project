@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>End-to-End Deployment Workflow with YAML-Excel Comparator</title>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #f9f9f9;
+    padding: 20px;
+}
+.flowchart {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.box {
+    background: #e0e0e0;
+    padding: 10px 20px;
+    margin: 10px 0;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    text-align: center;
+    max-width: 300px;
+}
+.arrow {
+    width: 2px;
+    height: 20px;
+    background: #555;
+}
+.subtasks, .yaml-comparator {
+    display: none;
+    margin-top: 10px;
+    max-width: 800px;
+    background: #f4f4f4;
+    padding: 15px 20px;
+    border-radius: 6px;
+    text-align: left;
+    font-size: 14px;
+    color: #333;
+    white-space: pre-wrap; /* preserve formatting for code */
+    font-family: monospace;
+    overflow-x: auto;
+}
+.subtasks ul {
+    margin: 0;
+    padding-left: 20px;
+}
+.subtasks li {
+    margin: 6px 0;
+}
+.show {
+    display: block;
+}
+.link {
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer;
+    user-select: none;
+}
+</style>
+</head>
+<body>
+
+<div class="flowchart">
+    <div class="box">Ericsson & Customer signed contract<br><small>(Solution Preparation Kickstarts)</small></div>
+    <div class="arrow"></div>
+    <div class="box">Program Requests Bid Office Dimensioning<br><small>(Based on Offering Selected, Contracts, Product offering etc..)</small></div>
+    <div class="arrow"></div>
+    <div class="box">Project Team: Review Dimensioning Sheet<br><small>(Ensure Customer Alignment)</small></div>
+    <div class="arrow"></div>
+    <div class="box">Lexie Team: Generate YAML manifests<br><small>(Ensure Files Meet Version Standards & Updates)</small></div>
+    <div class="arrow"></div>
+    <div class="box">
+      Project Team: <span class="link" role="button" tabindex="0" onclick="toggleSubtasks()" onkeydown="if(event.key==='Enter'){toggleSubtasks();}">Pre-deployment: Key checks</span><br>
+      <small>(Cross-check YAMLs vs Dimensioning Sheet)</small>
+    </div>
+    <div class="subtasks" id="subtasks">
+        <ul>
+            <li>Pod counts</li>
+            <li>CPU/memory requests & limits</li>
+            <li>Namespaces</li>
+            <li>Labels & selectors</li>
+            <li>PersistentVolumeClaims</li>
+        </ul>
+    </div>
+    <div class="arrow"></div>
+
+    <!-- YAML-Excel Comparator Section -->
+    <div class="box">
+      YAML Comparator: <span class="link" role="button" tabindex="0" onclick="toggleYamlComparator()" onkeydown="if(event.key==='Enter'){toggleYamlComparator();}">View Comparator Pseudo Code</span>
+    </div>
+    <div class="yaml-comparator" id="yamlComparator">
+<pre>
+# Pseudo code to compare YAML data with Excel data
+
+function compareYAMLWithExcel(yamlData, excelData):
+    // Parse YAML data into structured object
+    parsedYaml = parseYAML(yamlData)
+
+    // Parse Excel data into structured object (e.g., list of dictionaries)
+    parsedExcel = parseExcel(excelData)
+
+    // For each key or section in YAML, check corresponding values in Excel
+    for each key in parsedYaml:
+        if key not in parsedExcel:
+            print("Key missing in Excel: " + key)
+            continue
+
+        // Compare values for this key
+        if parsedYaml[key] != parsedExcel[key]:
+            print("Mismatch found at key: " + key)
+            print("YAML value: " + parsedYaml[key])
+            print("Excel value: " + parsedExcel[key])
+
+    // Optionally, check for extra keys in Excel not in YAML
+    for each key in parsedExcel:
+        if key not in parsedYaml:
+            print("Extra key in Excel not found in YAML: " + key)
+
+    // Return true if all matched, false otherwise
+    return all keys matched with equal values
+</pre>
+    </div>
+    <div class="arrow"></div>
+
+    <!-- Deployment and Validation moved last -->
+    <div class="box">Deployment and Validation<br><small>(UAT, GoLIVE, and Lessons learnt & knowledge sharing)</small></div>
+</div>
+
+<script>
+function toggleSubtasks() {
+    document.getElementById('subtasks').classList.toggle('show');
+}
+function toggleYamlComparator() {
+    document.getElementById('yamlComparator').classList.toggle('show');
+}
+</script>
+
+</body>
+</html>
